@@ -1,0 +1,2 @@
+@model List<ActionItem>
+@if(Model.Count==0){<p>No entries recorded.</p>}else{<table class="print-table"><thead><tr><th>Action / check</th><th>Responsible</th><th>Due</th><th>Completed</th><th>Evidence</th></tr></thead><tbody>@foreach(var x in Model){<tr><td>@x.Description</td><td>@x.Responsible</td><td>@x.DueDate?.ToString("dd MMM yyyy")</td><td>@x.CompletedDate?.ToString("dd MMM yyyy")</td><td>@x.Evidence</td></tr>}</tbody></table>}

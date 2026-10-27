@@ -1,0 +1,4 @@
+@model DashboardVm
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@{ViewData["Title"]="Workflow console";ViewData["BlazorDashboard"]=true;var board=WorkflowBoardModel.From(Model,Antiforgery.GetAndStoreTokens(Context).RequestToken!);}
+<component type="typeof(SmaComplaints.Components.WorkflowDashboard)" render-mode="ServerPrerendered" param-Model="board" />

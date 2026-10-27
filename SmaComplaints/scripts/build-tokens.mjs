@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const tokens=JSON.parse(fs.readFileSync(path.join(root,'ui-design-system.json'),'utf8'));
+const vars=Object.entries(tokens.themes.light).map(([key,value])=>`  --wf-${key.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}: ${value};`);
+const dark=Object.entries(tokens.themes.dark).map(([key,value])=>`  --wf-${key.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}: ${value};`);
+for(const [key,value]of Object.entries(tokens.density.compact))vars.push(`  --wf-${key.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())}: ${value};`);
+vars.push(`  --wf-font: ${tokens.typography.family.ui};`);
+for(const [key,value]of Object.entries(tokens.primitives.radius))vars.push(`  --wf-radius-${key}: ${value};`);
+for(const [key,value]of Object.entries(tokens.typography.scale))vars.push(`  --wf-type-${key}-size: ${value.size};`, `  --wf-type-${key}-line: ${value.lineHeight};`);
+for(const [state,values]of Object.entries(tokens.pipelineStates))for(const name of ['foreground','background','border','rail'])vars.push(`  --wf-${state.toLowerCase()}-${name}: ${values[name]};`);
+const output=`/* Generated from ui-design-system.json. Run node scripts/build-tokens.mjs after editing tokens. */\n:root {\n${vars.join('\n')}\n}\n.wf-board[data-theme="dark"] {\n${dark.join('\n')}\n  color-scheme: dark;\n}\n`;
+fs.mkdirSync(path.join(root,'Styles'),{recursive:true});fs.writeFileSync(path.join(root,'Styles','tokens.css'),output);
+console.log('Generated Styles/tokens.css from ui-design-system.json');

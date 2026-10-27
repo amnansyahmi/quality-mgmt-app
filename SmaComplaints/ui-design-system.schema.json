@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SMA workflow design token framework",
+  "type": "object",
+  "required": ["name", "version", "stack", "primitives", "themes", "typography", "density", "components", "pipelineStates", "accessibility"],
+  "properties": {
+    "name": {"type": "string"},
+    "version": {"type": "string"},
+    "updated": {"type": "string", "format": "date"},
+    "themes": {"type": "object", "required": ["light", "dark"]},
+    "density": {"type": "object", "required": ["compact", "comfortable", "touch"]},
+    "pipelineStates": {
+      "type": "object",
+      "required": ["Active", "Paused", "Failed"],
+      "additionalProperties": {
+        "type": "object",
+        "required": ["label", "description", "foreground", "background", "border", "allowedActions", "interactionMatrix"],
+        "properties": {
+          "interactionMatrix": {
+            "type": "object",
+            "required": ["default", "hover", "selected", "focusVisible", "loading", "disabled", "error", "reducedMotion"]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+* text=auto
+*.cs text eol=lf
+*.cshtml text eol=lf
+*.razor text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.sql text eol=lf
+*.traineddata binary
+*.ico binary

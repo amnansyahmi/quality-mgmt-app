@@ -1,0 +1,6 @@
+@model FieldVm
+<div class="field"><label for="f-@Model.Name">@Model.Label @if(Model.Required){<span class="required">*</span>}</label>
+@if(Model.Type=="textarea"){<textarea id="f-@Model.Name" name="@Model.Name" rows="4" maxlength="20000">@Model.Value</textarea>}
+else if(Model.Options!=null){<select id="f-@Model.Name" name="@Model.Name"><option value="">Select…</option>@foreach(var option in Model.Options){<option value="@option" selected="@(option==Model.Value)">@option</option>}</select>}
+else{<input id="f-@Model.Name" name="@Model.Name" type="@Model.Type" value="@Model.Value" maxlength="@(Model.Name=="Subject"?300:Model.Name=="CustomerName"?200:500)" />}
+@if(Model.Help!=null){<small>@Model.Help</small>}</div>

@@ -1,0 +1,16 @@
+{
+  "name": "sma-workflow-console-design",
+  "private": true,
+  "scripts": {
+    "build:css": "node scripts/build-tokens.mjs && tailwindcss -i Styles/workflow.css -o wwwroot/css/workflow.css --minify",
+    "build:vendor": "node scripts/copy-vendor.mjs",
+    "build": "npm run build:vendor && npm run build:css"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.0",
+    "tailwindcss": "4.3.0"
+  },
+  "dependencies": {
+    "chart.js": "4.6.1"
+  }
+}

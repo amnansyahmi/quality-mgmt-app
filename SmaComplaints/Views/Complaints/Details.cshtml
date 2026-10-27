@@ -1,0 +1,30 @@
+@model DetailVm
+@inject Workflow Flow
+@{var c=Model.Complaint;var u=Model.User;ViewData["Title"]=c.Reference;string Person(Guid? id)=>Model.Users.FirstOrDefault(x=>x.Id==id)?.Name??"Unassigned";var activeTab=new[]{"notification","processing","effectiveness","evidence","history"}.Contains(Model.Tab)?Model.Tab:"notification";}
+<a class="back-link" href="/Complaints?view=@(Context.Request.Query["from"]=="inbox"?"inbox":"register")">← @(Context.Request.Query["from"]=="inbox"?"My task inbox":"Complaint register")</a>
+<div class="page-heading detail-heading"><div><div class="eyebrow">@c.Reference <span class="revision">VERSION @c.Revision</span></div><h1>@(c.Subject==""?"New complaint":c.Subject)</h1><p>@(c.Hospital==""?"Complete the notification details to get started.":c.Hospital+" · "+c.CustomerName)</p></div><a class="btn secondary" href="/Complaints/Print/@c.Id" target="_blank">↗ Print / save as PDF</a></div>
+<div class="record-status"><span class="badge @(c.Stage==Stage.Closed?"closed":"progress")">@Ui.StageName(c.Stage)</span><span>Current task: <strong>@Person(Flow.Assignee(c))</strong></span><span class="@(Workflow.IsOverdue(c)?"overdue-text":"")">Due @Ui.Date(c.DueAt)</span></div>
+@await Html.PartialAsync("_WorkflowTask",Model)
+<div class="detail-grid"><section class="panel detail-panel"><nav class="tabs" aria-label="Complaint sections">@foreach(var tab in new[]{("notification","Part A · Notification"),("processing","Part B · Processing"),("effectiveness","Part C · Effectiveness"),("evidence","Evidence"),("history","History")}){<a class="@(activeTab==tab.Item1?"active":"")" href="/Complaints/Details/@c.Id?tab=@tab.Item1&amp;from=@Context.Request.Query["from"]">@tab.Item2</a>}</nav><div class="form-body" id="complaint-form">
+@switch(activeTab)
+{
+case "notification": @await Html.PartialAsync("_Notification",Model); break;
+case "processing": @await Html.PartialAsync("_Processing",Model); break;
+case "effectiveness":
+<div class="section-heading"><span class="section-number">C</span><div><h2>Monitor actions for effectiveness</h2><p>QM records follow-up evidence before closure review.</p></div></div>
+<form action="/Complaints/Edit" method="post"><input type="hidden" name="returnToInbox" value="true" />@Html.AntiForgeryToken()<input type="hidden" name="id" value="@c.Id" /><input type="hidden" name="revision" value="@c.Revision" /><input type="hidden" name="section" value="effectiveness" /><fieldset disabled="@(!Flow.CanEditC(c,u))">@await Html.PartialAsync("_Actions",("Effectiveness",c.Effectiveness,true,Flow.CanEditC(c,u),false))</fieldset>@if(Flow.CanEditC(c,u)){<div class="form-footer"><button class="btn secondary" name="command" value="save">Save progress</button><button class="btn primary" name="command" value="advance">@Workflow.SubmitLabel(c)</button></div>}</form><h3 class="section-subtitle">3.1 Closure of report</h3><p class="muted">QM reviews the completed effectiveness checks. CM then approves closure. Both decisions appear in the approval history.</p>@await Html.PartialAsync("_ApprovalHistory",c)
+break;
+case "evidence":
+<div class="section-heading"><span class="section-number">↥</span><div><h2>Supporting evidence</h2><p>Photos, data files, and documents linked to this complaint.</p></div></div>
+@if(Flow.CanUpload(c,u)){<form action="/Complaints/Upload" method="post" enctype="multipart/form-data" class="upload-zone">@Html.AntiForgeryToken()<input type="hidden" name="id" value="@c.Id" /><input type="hidden" name="revision" value="@c.Revision" /><label for="evidence-file"><strong>Add supporting evidence</strong><span>PDF, PNG, JPG, CSV, TXT, XLSX, DOCX, or ZIP. Up to 10 MB per file.</span></label><input type="file" name="file" id="evidence-file" required accept=".pdf,.png,.jpg,.jpeg,.csv,.txt,.xlsx,.docx,.zip" /><button class="btn primary small">Upload file</button></form>}
+@if(c.Attachments.Count==0){<div class="empty-state"><h3>No evidence attached yet</h3><p>Supporting evidence is required before the initial complaint can be submitted.</p></div>}
+@foreach(var a in c.Attachments){<a class="file-row" href="/Complaints/Download/@a.Id"><span class="file-icon">▤</span><div><strong>@a.Name</strong><small>@((a.Size/1024d).ToString("N1")) KB · @Person(a.UploadedBy) · @Ui.Date(a.UploadedAt)</small></div><span>↓</span></a>}
+<p class="muted small-text">@c.Attachments.Count of 20 files · @((c.Attachments.Sum(x=>x.Size)/1048576d).ToString("N1")) of 50 MB used. Files download for review.</p>
+break;
+case "history":
+<div class="section-heading"><span class="section-number">◷</span><div><h2>Activity & approval history</h2><p>Decisions are recorded against the signed-in account and timestamp.</p></div></div>
+<div class="timeline">@foreach(var h in c.History.OrderByDescending(x=>x.At)){<article><span class="timeline-dot"></span><div><strong>@h.Action</strong><p>@h.ActorName <span class="muted">· @h.ActorRole · @Ui.Date(h.At)</span></p>@if(h.Note!=""){<p class="history-note">@h.Note</p>}@if(h.FromStage!=h.ToStage){<small>@h.FromStage → @h.ToStage</small>}</div></article>}</div>
+break;
+}
+</div></section><aside class="record-aside"><section class="panel summary-panel"><h3>People & ownership</h3><dl><dt>Submitted by</dt><dd>@c.SubmittedBy</dd><dt>Responsible department</dt><dd>@(c.Department==""?"Awaiting assignment":c.Department)</dd><dt>Complaint owner</dt><dd>@Person(c.OwnerId)</dd><dt>HOD</dt><dd>@Person(c.HodId)</dd><dt>Quality Manager</dt><dd>@Person(c.QmId)</dd><dt>CM</dt><dd>@Person(c.CmId)</dd></dl></section>
+<section class="panel summary-panel"><h3>Reporting review</h3><p><span class="badge @(c.ReportingReviewed?"closed":"approval")">@(c.ReportingReviewed?"QM reviewed":"Awaiting QM review")</span></p><p>@(c.Reportable==true?"Reportable · due "+c.ReportingDueDate?.ToString("dd MMM yyyy"):c.ReportingReviewed?(c.Category=="Non-Quality"?"Not applicable":"Not reportable"):c.HasReportingFlag?"A reporting criterion is marked Yes.":"QM confirms the determination.")</p></section></aside></div>

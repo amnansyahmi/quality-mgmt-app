@@ -1,0 +1,23 @@
+@inject IConfiguration Config
+@inject SmaComplaints.Data.IFormStore FormLibrary
+@{
+    var signedIn=User.Identity?.IsAuthenticated==true;
+    var role=User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value??"";
+    var active=ViewData["ActiveNav"] as string??Context.Request.Query["view"].ToString();
+    if(Context.Request.RouteValues["controller"]?.ToString()=="Admin")active="admin";
+    var demo=Config.GetValue<bool>("DemoMode");
+    var publishedForms=new List<FormSummary>();if(signedIn){try{publishedForms=await FormLibrary.SummariesAsync();}catch(WorkflowException){}}
+}
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>@ViewData["Title"] · SMA Complaint Management</title><link rel="stylesheet" href="~/css/app.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/workflow.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/workspace.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/form-studio.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/workspace-support.css" asp-append-version="true" /></head><body class="@(signedIn ? "workflow-console" : "")">
+@if(signedIn)
+{
+<aside class="sidebar"><a href="/" class="brand"><span class="brandmark">S</span><span>SMA<span class="brand-sub">Quality management</span></span></a><div class="workspace-label">Complaint workspace</div>@await Html.PartialAsync("_WorkspaceNavigation",(active,role,publishedForms))<div class="sidebar-bottom"><div class="small-label">Form reference</div><strong>Complaint handling</strong><p>SMA-FM-QM-05<br />Revision 07 · 12 Sep 2025</p><span class="sidebar-pill">Internal workspace</span></div></aside>
+<div class="app-shell"><header class="topbar"><div><span class="muted">Workspace</span><span class="slash">/</span><strong>@(ViewData["Title"]??"Overview")</strong></div><div class="topbar-right"><button class="btn secondary small support-button" type="button" data-open-dialog="role-help" aria-label="Show help" title="Show help"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 .2c0 1.8-2.5 1.8-2.5 3.8M12 16.8v.1"/></svg></button><button class="btn secondary small support-button" type="button" data-open-dialog="workspace-notifications" id="notification-bell" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5zM10 21h4"/></svg><b id="notification-count" hidden>0</b></button><span class="top-date">@Ui.Today.ToString("dd MMM yyyy") · MYT</span><span class="avatar">@Ui.Initials(User.Identity!.Name??"User")</span><div class="user-meta"><strong>@User.Identity.Name</strong><small>@role</small></div><form action="/Account/Logout" method="post">@Html.AntiForgeryToken()<button class="text-button" title="Sign out">Sign out</button></form></div></header>
+@if(demo){<div class="demo-banner"><div><b>Demo</b><span>Sample records. Changes reset when the app restarts.</span></div><form action="/Account/Demo" method="post">@Html.AntiForgeryToken()<label for="demo-role">Preview role</label><select id="demo-role" name="role" data-submit-on-change>@foreach(var r in Roles.All){<option selected="@(r==role)">@r</option>}</select><button class="text-button">Switch</button></form></div>}
+@await Html.PartialAsync("_WorkspaceSupport",role)<main class="main-content" id="main-content">@if(TempData["Error"] is string error){<div class="alert error" role="alert">@error</div>}@if(TempData["Success"] is string success){<div class="alert success" role="status">@success</div>}@RenderBody()</main><footer class="app-footer"><span>SMA Complaint Management</span><span>All times shown in Malaysia time · UTC+8</span></footer></div>
+}
+else{<main class="login-page">@RenderBody()</main>}
+@if(ViewData["BlazorDashboard"] is true){<script src="~/vendor/chart.js/chart.umd.js" asp-append-version="true"></script><script src="/_framework/blazor.server.js"></script>}
+@if(signedIn){<script src="~/js/workspace-support.js" asp-append-version="true"></script>}
+<script src="~/js/app.js" asp-append-version="true"></script>@await RenderSectionAsync("Scripts", required:false)
+</body></html>

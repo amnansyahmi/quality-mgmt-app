@@ -1,0 +1,690 @@
+{
+  "$schema": "./ui-design-system.schema.json",
+  "name": "SMA Workflow Console",
+  "version": "1.2.0",
+  "updated": "2026-10-27",
+  "stack": {
+    "frontend": "Blazor Server Razor components hosted in ASP.NET Core MVC",
+    "styling": "Tailwind CSS 4 + generated semantic CSS variables",
+    "backend": "ASP.NET Core MVC / SQL Server",
+    "requestedSkillPreset": "blazor-tailwind",
+    "resolvedSkillPreset": "html-tailwind",
+    "adaptation": "Upstream ui-ux-pro-max has no blazor-tailwind preset. Its verified html-tailwind guidelines are combined with Microsoft Blazor integration guidance."
+  },
+  "provenance": {
+    "uiUxProMax": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+    "frontendDesign": "https://github.com/anthropics/skills/tree/main/skills/frontend-design",
+    "verifiedMatches": [
+      "data-dense-dashboard",
+      "bento-box-grid",
+      "html-tailwind focus states"
+    ],
+    "discardedRecommendations": [
+      "Enterprise Gateway marketing landing-page pattern",
+      "16\u201324px bento radii and hover scaling",
+      "GSAP scroll reveals"
+    ],
+    "userOverrides": [
+      "High density",
+      "Bento composition",
+      "No generic cards",
+      "No massive padding",
+      "No purple gradients"
+    ],
+    "method": "UI/UX Pro Max recommendations synthesized into project-specific tokens before the frontend-design implementation pass.",
+    "antiSlop": "https://github.com/pbakaus/impeccable"
+  },
+  "principles": [
+    "Show actionable records before decorative summaries.",
+    "Use an asymmetric operations board: work queue dominates, contextual inspector supports it.",
+    "Bento means related work areas with deliberate spans, not a wall of identical cards.",
+    "Keep complaint stage, pipeline runtime state, and deadline health separate.",
+    "Use sentence case, tabular numbers, and restrained marine green for hierarchy.",
+    "No decorative gradients, hover scale, oversized headings, or repeated eyebrow labels.",
+    "Keep sidebar navigation and icons; indicate selection with fill and weight, never an accent stripe.",
+    "Charts use locally bundled MIT-licensed Chart.js with accessible descriptions.",
+    "Separate work areas through alignment and spacing; reserve rules for data boundaries."
+  ],
+  "primitives": {
+    "palette": {
+      "white": "#FFFFFF",
+      "canvas": "#F2F5F7",
+      "ink": "#172B3A",
+      "slate": "#526473",
+      "border": "#D3DCE3",
+      "marine": "#087A68",
+      "blue": "#2468A2",
+      "amber": "#805300",
+      "red": "#A42D29"
+    },
+    "spacing": {
+      "0": "0px",
+      "1": "2px",
+      "2": "4px",
+      "3": "6px",
+      "4": "8px",
+      "5": "10px",
+      "6": "12px",
+      "7": "16px",
+      "8": "20px",
+      "9": "24px",
+      "10": "32px"
+    },
+    "radius": {
+      "control": "4px",
+      "badge": "3px",
+      "panel": "0px",
+      "inspector": "6px",
+      "avatar": "999px"
+    },
+    "borderWidth": {
+      "default": "1px",
+      "selected": "2px",
+      "focus": "2px"
+    },
+    "elevation": {
+      "none": "none",
+      "panel": "none",
+      "overlay": "0 12px 32px rgb(23 43 58 / 16%)"
+    },
+    "zIndex": {
+      "base": 0,
+      "sticky": 10,
+      "sidebar": 20,
+      "popover": 40,
+      "dialog": 60,
+      "toast": 80
+    }
+  },
+  "themes": {
+    "light": {
+      "canvas": "#F6F7F8",
+      "surface": "#FFFFFF",
+      "subtle": "#F7F9FA",
+      "ink": "#202B33",
+      "muted": "#586672",
+      "border": "#E3E7EA",
+      "strongBorder": "#91A3B0",
+      "accent": "#087A68",
+      "onAccent": "#FFFFFF",
+      "accentSoft": "#E6F3ED",
+      "focus": "#2468A2",
+      "sidebar": "#16313E",
+      "sidebarText": "#D5E2E9",
+      "sidebarMuted": "#A3B6C2",
+      "selection": "#EAF5F1",
+      "danger": "#A42D29",
+      "warning": "#805300"
+    },
+    "dark": {
+      "canvas": "#13212B",
+      "surface": "#1A2D39",
+      "subtle": "#213846",
+      "ink": "#ECF2F5",
+      "muted": "#B6C7D2",
+      "border": "#456271",
+      "strongBorder": "#7793A2",
+      "accent": "#65D5B8",
+      "onAccent": "#102B23",
+      "accentSoft": "#1C463D",
+      "focus": "#87B8EE",
+      "sidebar": "#101F29",
+      "sidebarText": "#E5EDF2",
+      "sidebarMuted": "#ADBDC8",
+      "selection": "#23483F",
+      "danger": "#FFA29A",
+      "warning": "#F3CD79"
+    }
+  },
+  "typography": {
+    "family": {
+      "ui": "Aptos, \"Segoe UI\", sans-serif",
+      "data": "Aptos, \"Segoe UI\", sans-serif"
+    },
+    "rationale": "A clear humanist sans with tabular numerals supports scanning dense operational records.",
+    "scale": {
+      "caption": {
+        "size": "12px",
+        "lineHeight": "16px",
+        "weight": 400
+      },
+      "body": {
+        "size": "13px",
+        "lineHeight": "20px",
+        "weight": 400
+      },
+      "control": {
+        "size": "13px",
+        "lineHeight": "18px",
+        "weight": 500
+      },
+      "section": {
+        "size": "14px",
+        "lineHeight": "20px",
+        "weight": 600
+      },
+      "title": {
+        "size": "24px",
+        "lineHeight": "30px",
+        "weight": 600
+      },
+      "metric": {
+        "size": "26px",
+        "lineHeight": "30px",
+        "weight": 600
+      },
+      "mobileBody": {
+        "size": "16px",
+        "lineHeight": "24px",
+        "weight": 400
+      }
+    },
+    "numericVariant": "tabular-nums",
+    "minimumMeaningfulText": "12px",
+    "headingCase": "sentence",
+    "maxProseMeasure": "72ch"
+  },
+  "density": {
+    "default": "compact",
+    "compact": {
+      "controlHeight": "32px",
+      "rowHeight": "44px",
+      "headerHeight": "36px",
+      "panelPadding": "12px",
+      "panelGap": "12px",
+      "pageGutter": "20px",
+      "sidebarWidth": "208px",
+      "topbarHeight": "52px",
+      "iconSize": "16px",
+      "hitArea": "28px"
+    },
+    "comfortable": {
+      "controlHeight": "40px",
+      "rowHeight": "56px",
+      "headerHeight": "40px",
+      "panelPadding": "16px",
+      "panelGap": "16px",
+      "pageGutter": "24px",
+      "sidebarWidth": "220px",
+      "topbarHeight": "60px",
+      "iconSize": "18px",
+      "hitArea": "40px"
+    },
+    "touch": {
+      "controlHeight": "44px",
+      "rowHeight": "68px",
+      "headerHeight": "44px",
+      "panelPadding": "12px",
+      "panelGap": "12px",
+      "pageGutter": "12px",
+      "sidebarWidth": "60px",
+      "topbarHeight": "52px",
+      "iconSize": "20px",
+      "hitArea": "44px"
+    }
+  },
+  "layout": {
+    "columns": 12,
+    "desktopAreas": {
+      "operationalSummary": "One shared strip",
+      "flowDistribution": "6 columns",
+      "deadlineHealth": "3 columns",
+      "complaintAging": "3 columns",
+      "departmentWorkload": "4 columns",
+      "dailyIntake": "8 columns",
+      "workQueue": "9 columns",
+      "contextInspector": "3 columns"
+    },
+    "alignment": "Left aligned labels and content; right aligned counts and deadlines.",
+    "breakpoints": {
+      "phone": "375px",
+      "tablet": "768px",
+      "desktop": "1024px",
+      "wide": "1440px"
+    },
+    "tableOverflow": "A labelled independently scrollable table; the page itself must not overflow.",
+    "mobileOrder": [
+      "Operational summary",
+      "Workflow stages",
+      "Deadline health",
+      "Complaint aging",
+      "Department workload",
+      "Daily intake",
+      "Work queue",
+      "Context inspector",
+      "Recent activity"
+    ]
+  },
+  "components": {
+    "button": {
+      "radius": "{primitives.radius.control}",
+      "height": "{density.compact.controlHeight}",
+      "horizontalPadding": "12px",
+      "variants": [
+        "primary",
+        "secondary",
+        "quiet",
+        "danger"
+      ],
+      "states": [
+        "default",
+        "hover",
+        "pressed",
+        "focus-visible",
+        "disabled",
+        "loading"
+      ],
+      "primary": {
+        "background": "{themes.light.accent}",
+        "foreground": "{themes.light.onAccent}"
+      },
+      "focus": {
+        "outline": "2px solid {themes.light.focus}",
+        "offset": "2px"
+      },
+      "disabled": {
+        "background": "#EFF2F4",
+        "foreground": "#61717B",
+        "border": "#C7D1D7"
+      },
+      "loading": "Keep width, show progress text, prevent duplicate submission"
+    },
+    "table": {
+      "rowHeight": "44px",
+      "headHeight": "36px",
+      "cellPadding": "8px 12px",
+      "fontSize": "13px",
+      "stickyHeader": true,
+      "selected": "{themes.light.selection}",
+      "hover": "{themes.light.subtle}",
+      "captionRequired": true,
+      "sortIndicator": "Visible text or labelled icon",
+      "selectionSemantics": "Dedicated inspect button with aria-pressed; reference remains a normal link"
+    },
+    "panel": {
+      "padding": "0px",
+      "radius": "0px",
+      "shadow": "none",
+      "border": "none",
+      "separation": "Shared surface, spacing, and 1px horizontal rules between sections"
+    },
+    "filter": {
+      "height": "32px",
+      "selected": "aria-pressed=true and visible count",
+      "empty": "No matching records. Clear filters or choose another queue."
+    },
+    "inspector": {
+      "width": "minmax(280px, 1fr)",
+      "content": [
+        "Reference",
+        "Stage",
+        "Owner",
+        "Deadline",
+        "Next required action"
+      ],
+      "primaryAction": "Open current task",
+      "mobile": "Follows queue in normal document flow"
+    },
+    "badge": {
+      "minHeight": "22px",
+      "padding": "2px 6px",
+      "iconSize": "12px",
+      "colourOnly": false,
+      "textWrap": "nowrap when it fits; wrap naturally under zoom"
+    },
+    "dialog": {
+      "maxWidth": "560px",
+      "focusTrap": true,
+      "escapeCloses": true,
+      "returnFocus": true,
+      "destructiveConfirm": "Show record reference and exact effect"
+    },
+    "navigation": {
+      "placement": "Sidebar",
+      "desktopWidth": "208px",
+      "compactWidth": "52\u201356px",
+      "selected": "Neutral fill and stronger label weight",
+      "decorativeSideStripe": false,
+      "icon": "18px authored stroke SVG"
+    },
+    "charts": {
+      "package": "chart.js",
+      "version": "4.6.1",
+      "license": "MIT",
+      "hosting": "Local vendor assets",
+      "animation": false,
+      "accessibleFallback": "Labelled canvas and real-count descriptions",
+      "intake": "Vertical bars; daily discrete counts"
+    },
+    "formStudio": {
+      "importFormats": [
+        "DOCX",
+        "PDF",
+        "PNG",
+        "JPG"
+      ],
+      "extraction": "Local text extraction and English OCR",
+      "review": "Editable fields, tables, roles and workflow; explicit admin review before publish",
+      "publication": "Immutable definition, named menu and workspace",
+      "runtime": "Typed fields, step-specific editing, sequential routing, returns and audit history"
+    },
+    "workflowStepper": {
+      "numbering": "1-based display; internal workflow indexes unchanged",
+      "layout": "Connected circles and arrows; horizontal scrolling on narrow screens",
+      "states": {
+        "completed": "Checkmark with completed label",
+        "current": "Filled accent circle and aria-current=step",
+        "upcoming": "Outlined numbered circle",
+        "returned": "Current step needs correction; later reviews remain upcoming"
+      },
+      "summary": "Step N of total with current task name"
+    },
+    "headerActions": {
+      "iconOnly": true,
+      "help": "Outlined question-mark circle",
+      "notifications": "Bell with unread count",
+      "desktopSize": "34px",
+      "touchSize": "44px",
+      "accessibility": "Accessible name, focus ring and tooltip"
+    }
+  },
+  "pipelineStates": {
+    "Active": {
+      "label": "Active",
+      "description": "Work can proceed; a responsible person or worker is processing it.",
+      "icon": "play",
+      "foreground": "#075D4B",
+      "background": "#E6F3ED",
+      "border": "#99CAB5",
+      "rail": "#138763",
+      "liveRegion": "polite",
+      "motion": "Static icon by default; an optional progress indicator never replaces a textual stage.",
+      "allowedActions": [
+        "Inspect",
+        "Open task",
+        "Pause when authorized"
+      ],
+      "blockedActions": [
+        "Retry a running operation"
+      ],
+      "emptyMessage": "No active pipelines match these filters.",
+      "interactionMatrix": {
+        "default": {
+          "background": "#E6F3ED",
+          "foreground": "#075D4B",
+          "border": "#99CAB5",
+          "icon": "play",
+          "text": "Active"
+        },
+        "hover": {
+          "background": "#E6F3ED",
+          "border": "#138763",
+          "elevation": "none",
+          "cursor": "pointer only when interactive"
+        },
+        "selected": {
+          "outline": "2px solid #138763",
+          "background": "#E6F3ED",
+          "ariaSelected": true
+        },
+        "focusVisible": {
+          "outline": "2px solid #2468A2",
+          "offset": "2px",
+          "mustNotBeObscured": true
+        },
+        "loading": {
+          "controlDisabled": true,
+          "label": "Updating pipeline\u2026",
+          "preservePreviousState": true
+        },
+        "disabled": {
+          "foreground": "#61717B",
+          "background": "#EFF2F4",
+          "border": "#C7D1D7",
+          "semantics": "native disabled; explain unmet condition in nearby text"
+        },
+        "error": {
+          "retainInputs": true,
+          "message": "State change failed. The previous state is retained.",
+          "foreground": "#A42D29",
+          "announce": "polite"
+        },
+        "reducedMotion": {
+          "duration": "0ms",
+          "progress": "Static progressbar with accessible value"
+        }
+      }
+    },
+    "Paused": {
+      "label": "Paused",
+      "description": "Execution is explicitly suspended or waiting for an acknowledged dependency. Human approval stages remain separately labelled Awaiting approval.",
+      "icon": "pause",
+      "foreground": "#805300",
+      "background": "#FFF3D6",
+      "border": "#D9B565",
+      "rail": "#A36D05",
+      "liveRegion": "polite",
+      "motion": "None",
+      "allowedActions": [
+        "Inspect reason",
+        "Resume when authorized"
+      ],
+      "blockedActions": [
+        "Continue without resolving the pause condition"
+      ],
+      "emptyMessage": "No paused pipelines match these filters.",
+      "interactionMatrix": {
+        "default": {
+          "background": "#FFF3D6",
+          "foreground": "#805300",
+          "border": "#D9B565",
+          "icon": "pause",
+          "text": "Paused"
+        },
+        "hover": {
+          "background": "#FFF3D6",
+          "border": "#A36D05",
+          "elevation": "none",
+          "cursor": "pointer only when interactive"
+        },
+        "selected": {
+          "outline": "2px solid #A36D05",
+          "background": "#FFF3D6",
+          "ariaSelected": true
+        },
+        "focusVisible": {
+          "outline": "2px solid #2468A2",
+          "offset": "2px",
+          "mustNotBeObscured": true
+        },
+        "loading": {
+          "controlDisabled": true,
+          "label": "Resuming pipeline\u2026",
+          "preservePreviousState": true
+        },
+        "disabled": {
+          "foreground": "#61717B",
+          "background": "#EFF2F4",
+          "border": "#C7D1D7",
+          "semantics": "native disabled; explain unmet condition in nearby text"
+        },
+        "error": {
+          "retainInputs": true,
+          "message": "State change failed. The previous state is retained.",
+          "foreground": "#A42D29",
+          "announce": "polite"
+        },
+        "reducedMotion": {
+          "duration": "0ms",
+          "progress": "Static progressbar with accessible value"
+        }
+      }
+    },
+    "Failed": {
+      "label": "Failed",
+      "description": "An execution attempt ended unsuccessfully. Overdue complaints are not automatically classified as failed.",
+      "icon": "alert",
+      "foreground": "#A42D29",
+      "background": "#FDEDEA",
+      "border": "#E0A29B",
+      "rail": "#C4453B",
+      "liveRegion": "assertive only for a newly failed user-initiated action",
+      "motion": "None; no flashing or pulsing error indicators",
+      "allowedActions": [
+        "Inspect error",
+        "Retry an idempotent operation when authorized"
+      ],
+      "blockedActions": [
+        "Hide the error",
+        "Auto-retry a non-idempotent approval"
+      ],
+      "emptyMessage": "No execution failures match these filters.",
+      "interactionMatrix": {
+        "default": {
+          "background": "#FDEDEA",
+          "foreground": "#A42D29",
+          "border": "#E0A29B",
+          "icon": "alert",
+          "text": "Failed"
+        },
+        "hover": {
+          "background": "#FDEDEA",
+          "border": "#C4453B",
+          "elevation": "none",
+          "cursor": "pointer only when interactive"
+        },
+        "selected": {
+          "outline": "2px solid #C4453B",
+          "background": "#FDEDEA",
+          "ariaSelected": true
+        },
+        "focusVisible": {
+          "outline": "2px solid #2468A2",
+          "offset": "2px",
+          "mustNotBeObscured": true
+        },
+        "loading": {
+          "controlDisabled": true,
+          "label": "Retrying operation\u2026",
+          "preservePreviousState": true
+        },
+        "disabled": {
+          "foreground": "#61717B",
+          "background": "#EFF2F4",
+          "border": "#C7D1D7",
+          "semantics": "native disabled; explain unmet condition in nearby text"
+        },
+        "error": {
+          "retainInputs": true,
+          "message": "State change failed. The previous state is retained.",
+          "foreground": "#A42D29",
+          "announce": "polite"
+        },
+        "reducedMotion": {
+          "duration": "0ms",
+          "progress": "Static progressbar with accessible value"
+        }
+      }
+    }
+  },
+  "pipelineTransitions": {
+    "Active": {
+      "Paused": {
+        "requires": [
+          "Authorized actor",
+          "Reason"
+        ],
+        "confirmation": "Only if work is interrupted",
+        "audit": true
+      },
+      "Failed": {
+        "trigger": "Recorded execution error",
+        "audit": true
+      }
+    },
+    "Paused": {
+      "Active": {
+        "requires": [
+          "Authorized actor",
+          "Pause condition resolved"
+        ],
+        "audit": true
+      }
+    },
+    "Failed": {
+      "Active": {
+        "requires": [
+          "Authorized actor",
+          "Idempotent retry or explicit confirmation",
+          "Persisted retry attempt"
+        ],
+        "audit": true
+      }
+    }
+  },
+  "complaintStageStates": {
+    "Draft": "draft",
+    "Evaluation": "waiting",
+    "Investigation": "working",
+    "PlanHod": "approval",
+    "PlanQm": "approval",
+    "Actions": "working",
+    "CompletionHod": "approval",
+    "CompletionQm": "approval",
+    "Effectiveness": "verification",
+    "ClosureQm": "approval",
+    "ClosureCm": "approval",
+    "Closed": "completed"
+  },
+  "dataContract": {
+    "pipelineRuntime": "Not inferred from complaint stages or deadlines. Runtime state reference is a design specimen until a pipeline executor is connected.",
+    "deadlineHealth": [
+      "On schedule",
+      "Due soon",
+      "Overdue",
+      "No deadline"
+    ],
+    "emptyCounts": "Show real counts; no invented change percentages or uptime.",
+    "preview": "Synthetic preview records are visibly labelled.",
+    "authorization": "All approval and record mutation routes remain server-authorized MVC operations."
+  },
+  "motion": {
+    "feedback": "100ms",
+    "panelChange": "140ms",
+    "easing": "cubic-bezier(0.2,0,0,1)",
+    "reduced": "0ms",
+    "autoplay": false,
+    "forbidden": [
+      "Flashing errors",
+      "Infinite status pulses",
+      "Scroll reveal for important data",
+      "Hover scale"
+    ]
+  },
+  "accessibility": {
+    "textContrastMinimum": 4.5,
+    "largeTextContrastMinimum": 3,
+    "focusContrastMinimum": 3,
+    "desktopTargetMinimum": "24px; target 28px",
+    "touchTargetMinimum": "44px",
+    "focus": "2px outline with 2px offset",
+    "keyboard": [
+      "Tab through controls",
+      "Enter activates reference links",
+      "Space activates filter and inspect buttons",
+      "Native select keyboard behavior"
+    ],
+    "announcements": "One polite status region for filtered count / selection. Announce failures only when an action occurs.",
+    "zoom": "Reflow at 200%; full record values available without hover",
+    "stateSemantics": "Text + icon + colour, never colour alone"
+  },
+  "acceptance": [
+    "Token JSON validates and is the source for generated CSS variables.",
+    "Tailwind is compiled locally; no runtime CDN.",
+    "Dashboard is an actual .razor component.",
+    "Filters and inspector work over real authorized records.",
+    "Active, Paused, Failed have complete interaction matrices.",
+    "No gradient decoration, repeated generic cards, or spacious hero.",
+    "Check desktop and phone layout, keyboard focus, contrast, and reduced motion."
+  ]
+}
