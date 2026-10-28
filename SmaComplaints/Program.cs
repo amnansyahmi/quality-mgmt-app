@@ -10,6 +10,7 @@ using SmaComplaints.Models;
 using SmaComplaints.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+if(int.TryParse(Environment.GetEnvironmentVariable("PORT"),out var hostPort))builder.WebHost.UseUrls($"http://0.0.0.0:{hostPort}");
 var demo = builder.Configuration.GetValue<bool>("DemoMode");
 if (demo && !builder.Environment.IsDevelopment()) throw new InvalidOperationException("DemoMode is permitted only in Development. Configure SQL Server for deployment.");
 if(!demo&&builder.Configuration.GetValue<bool>("Mail:Enabled"))
@@ -18,7 +19,7 @@ if(!demo&&builder.Configuration.GetValue<bool>("Mail:Enabled"))
     if(!Uri.TryCreate(builder.Configuration["Mail:BaseUrl"],UriKind.Absolute,out var mailUrl)||mailUrl.Scheme!="https")throw new InvalidOperationException("Mail:BaseUrl must be the HTTPS address of the deployed app.");
 }
 builder.Services.AddControllersWithViews(o=>o.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())).AddMvcOptions(o=>o.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes=true);
-builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath,"App_Data","Keys")));
+builder.Services.AddDataProtection().PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration["DataProtection:KeysPath"]??Path.Combine(builder.Environment.ContentRootPath,"App_Data","Keys")));
 builder.Services.AddSingleton<Workflow>();
 builder.Services.AddSingleton<DocumentFormImporter>();
 builder.Services.AddSingleton<FormRuntime>();

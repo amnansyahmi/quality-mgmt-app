@@ -1,0 +1,14 @@
+**/bin/
+**/obj/
+**/node_modules/
+**/App_Data/
+**/.vs/
+**/*.user
+**/appsettings.Local.json
+**/publish/
+.git/
+.gitignore
+.gitattributes
+*.md
+Start-Demo.ps1
+SmaComplaints.Checks/
