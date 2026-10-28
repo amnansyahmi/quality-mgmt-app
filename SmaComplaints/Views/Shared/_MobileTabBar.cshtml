@@ -1,0 +1,15 @@
+@model (string Active,string Role)
+@{
+ var active=Model.Active;
+ var tabs=new[]{
+  ("Overview","/","overview",active=="overview"),
+  ("Inbox","/Complaints?view=inbox","inbox",active=="inbox"),
+  ("Register","/Complaints?view=register","register",active is "register" or "overdue"),
+  ("Forms","/Forms","forms",active=="forms"||active.StartsWith("form-")),
+ };
+ var inMenu=!tabs.Any(t=>t.Item4);
+}
+<nav class="tabbar" aria-label="Primary">
+@foreach(var t in tabs){<a class="tab @(t.Item4?"active":"")" href="@t.Item2" aria-current="@(t.Item4?"page":null)"><icon name="@t.Item3" size="22" /><span>@t.Item1</span></a>}
+<button class="tab @(inMenu?"active":"")" type="button" data-drawer-open aria-controls="app-sidebar" aria-expanded="false"><icon name="menu" size="22" /><span>Menu</span></button>
+</nav>

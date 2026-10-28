@@ -1,3 +1,16 @@
+// Mobile menu: the sidebar slides in as a drawer below 760px. Focus moves into it and returns to the Menu tab.
+(() => {
+ const sidebar=document.getElementById('app-sidebar'),opener=document.querySelector('[data-drawer-open]');if(!sidebar||!opener)return;
+ const scrim=document.querySelector('.drawer-scrim'),mobile=window.matchMedia('(max-width: 760px)');
+ const isOpen=()=>document.body.classList.contains('drawer-open');
+ function open(){document.body.classList.add('drawer-open');scrim.hidden=false;opener.setAttribute('aria-expanded','true');requestAnimationFrame(()=>sidebar.querySelector('.sidebar-close')?.focus());}
+ function close(restore=true){if(!isOpen())return;document.body.classList.remove('drawer-open');scrim.hidden=true;opener.setAttribute('aria-expanded','false');if(restore)opener.focus();}
+ opener.addEventListener('click',()=>isOpen()?close():open());
+ document.querySelectorAll('[data-drawer-close]').forEach(el=>el.addEventListener('click',()=>close()));
+ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&isOpen())close();});
+ sidebar.addEventListener('click',event=>{if(event.target.closest('a.nav-item'))close(false);});
+ mobile.addEventListener('change',()=>close(false));
+})();
 document.querySelectorAll('[data-submit-on-change]').forEach(select => select.addEventListener('change', () => select.form.requestSubmit()));
 document.querySelectorAll('[data-print]').forEach(button => button.addEventListener('click', () => window.print()));
 function renumberActionRows(body){
@@ -37,10 +50,6 @@ window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();
 (() => {
  const svgNS='http://www.w3.org/2000/svg';
  function icon(paths){const svg=document.createElementNS(svgNS,'svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.8');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');svg.setAttribute('aria-hidden','true');for(const d of paths){const path=document.createElementNS(svgNS,'path');path.setAttribute('d',d);svg.appendChild(path);}return svg;}
- const help=document.querySelector('[data-open-dialog="role-help"]');
- if(help){help.replaceChildren(icon(['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18','M9.5 9a2.5 2.5 0 0 1 5 .2c0 1.8-2.5 1.8-2.5 3.8','M12 16.8v.1']));help.setAttribute('aria-label','Show help');help.title='Show help';help.classList.add('support-icon');}
- const bell=document.getElementById('notification-bell');
- if(bell){bell.querySelector('.notification-word')?.remove();bell.classList.add('support-icon');bell.title='Notifications';}
  document.querySelectorAll('.runtime-route:not(.numbered-stepper)').forEach(list=>{
   const steps=Array.from(list.children),finish=steps[steps.length-1];if(steps.length<2)return;
   const complete=finish.classList.contains('current'),total=steps.length-1;

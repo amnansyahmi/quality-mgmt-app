@@ -10,13 +10,17 @@ await fs.mkdir(path.join(out, "html"), { recursive: true });
 
 const viewports = {
   phone: { ...devices["iPhone 13"], viewport: { width: 390, height: 844 } },
+  tablet: { viewport: { width: 820, height: 1180 }, deviceScaleFactor: 1, hasTouch: true },
   desktop: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
 };
+// Tablet only needs the shell and a dense page.
+const tabletPages = new Set(["01-login", "03-inbox-requestor", "04-register", "06-details"]);
 
 const report = [];
 const browser = await chromium.launch();
 
 async function capture(page, vp, name, { full = true, saveHtml = false } = {}) {
+  if (vp === "tablet" && !tabletPages.has(name)) return;
   await page.waitForLoadState("networkidle").catch(() => {});
   await page.waitForTimeout(400);
   const file = `${vp}-${name}.png`;
@@ -44,6 +48,14 @@ for (const [vp, opts] of Object.entries(viewports)) {
 
   await signIn(page, "Requestor");
   await capture(page, vp, "02-overview-requestor", { saveHtml: true });
+  const menu = page.locator("[data-drawer-open]");
+  if (vp === "phone" && (await menu.isVisible().catch(() => false))) {
+    await menu.click();
+    await page.waitForTimeout(350);
+    await capture(page, vp, "02b-menu-drawer", { full: false });
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(300);
+  }
   await page.goto(`${base}/Complaints?view=inbox`);
   await capture(page, vp, "03-inbox-requestor", { saveHtml: true });
   await page.goto(`${base}/Complaints?view=register`);

@@ -21,7 +21,7 @@
     ],
     "discardedRecommendations": [
       "Enterprise Gateway marketing landing-page pattern",
-      "16\u201324px bento radii and hover scaling",
+      "16–24px bento radii and hover scaling",
       "GSAP scroll reveals"
     ],
     "userOverrides": [
@@ -138,10 +138,10 @@
   },
   "typography": {
     "family": {
-      "ui": "Aptos, \"Segoe UI\", sans-serif",
-      "data": "Aptos, \"Segoe UI\", sans-serif"
+      "ui": "\"Inter Variable\", Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+      "data": "\"Inter Variable\", Inter, system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif"
     },
-    "rationale": "A clear humanist sans with tabular numerals supports scanning dense operational records.",
+    "rationale": "Self-hosted Inter (OFL) renders the same on phones and desktops; tabular numerals support scanning dense operational records.",
     "scale": {
       "caption": {
         "size": "12px",
@@ -149,13 +149,13 @@
         "weight": 400
       },
       "body": {
-        "size": "13px",
-        "lineHeight": "20px",
+        "size": "14px",
+        "lineHeight": "21px",
         "weight": 400
       },
       "control": {
-        "size": "13px",
-        "lineHeight": "18px",
+        "size": "14px",
+        "lineHeight": "20px",
         "weight": 500
       },
       "section": {
@@ -342,7 +342,7 @@
     "navigation": {
       "placement": "Sidebar",
       "desktopWidth": "208px",
-      "compactWidth": "52\u201356px",
+      "compactWidth": "52–56px",
       "selected": "Neutral fill and stronger label weight",
       "decorativeSideStripe": false,
       "icon": "18px authored stroke SVG"
@@ -434,7 +434,7 @@
         },
         "loading": {
           "controlDisabled": true,
-          "label": "Updating pipeline\u2026",
+          "label": "Updating pipeline…",
           "preservePreviousState": true
         },
         "disabled": {
@@ -499,7 +499,7 @@
         },
         "loading": {
           "controlDisabled": true,
-          "label": "Resuming pipeline\u2026",
+          "label": "Resuming pipeline…",
           "preservePreviousState": true
         },
         "disabled": {
@@ -565,7 +565,7 @@
         },
         "loading": {
           "controlDisabled": true,
-          "label": "Retrying operation\u2026",
+          "label": "Retrying operation…",
           "preservePreviousState": true
         },
         "disabled": {

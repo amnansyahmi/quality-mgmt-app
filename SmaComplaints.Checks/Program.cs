@@ -68,4 +68,15 @@ notifiedEntry.State="Returned";notifiedEntry.Step=0;FormRuntime.Record(notifiedE
 FormRuntime.Record(notifiedEntry,Role(Roles.Requestor),"Progress saved","");await notifiedForms.SaveEntryAsync(notifiedEntry,2);Check((await moduleAlerts.FeedAsync(Role(Roles.Requestor).Id)).Items.Count==1,"Routine progress saves do not create notification noise");
 var readBefore=DateTimeOffset.UtcNow;var futureDelivery=new NotificationDelivery(Role(Roles.Owner).Id,null,Role(Roles.Requestor).Id,"future-event","New task","Synthetic","/Complaints?view=inbox",readBefore.AddSeconds(1));moduleAlerts.Publish([futureDelivery],users);await moduleAlerts.ReadAsync(Role(Roles.Owner).Id,null,readBefore);Check((await moduleAlerts.FeedAsync(Role(Roles.Owner).Id)).Unread==1,"Mark all read does not consume notifications newer than its watermark");
 
+// Every icon named in a view or component exists in the generated Lucide set.
+var uiRoot=new DirectoryInfo(Directory.GetCurrentDirectory());while(uiRoot is not null&&!Directory.Exists(Path.Combine(uiRoot.FullName,"SmaComplaints","Views")))uiRoot=uiRoot.Parent;
+if(uiRoot is null)throw new Exception("FAILED: SmaComplaints/Views not found from "+Directory.GetCurrentDirectory());
+var iconUses=Directory.EnumerateFiles(Path.Combine(uiRoot.FullName,"SmaComplaints"),"*.*",SearchOption.AllDirectories).Where(f=>f.EndsWith(".cshtml")||f.EndsWith(".razor"))
+ .SelectMany(f=>System.Text.RegularExpressions.Regex.Matches(File.ReadAllText(f),"(?:<icon\\b[^>]*\\bname=\"|ConsoleIcon Name=\")([a-z][a-z0-9-]*)\"").Select(m=>(File:Path.GetFileName(f),Name:m.Groups[1].Value))).ToList();
+Check(iconUses.Count>20,"Views reference icons from the shared set");
+foreach(var use in iconUses)Check(Icons.Exists(use.Name),$"Icon '{use.Name}' used in {use.File} exists");
+foreach(var r in Roles.All)Check(Icons.Exists(Icons.ForRole(r)),$"Role {r} has an icon");
+Check(Icons.Svg("unknown-icon")=="","Unknown icon names render nothing");
+Check(Icons.Svg("help",20,label:"Help").Contains("aria-label=\"Help\"")&&!Icons.Svg("help").Contains("aria-label"),"Icons are decorative unless labelled");
+
 Console.WriteLine($"\n{checks} workflow and authorization checks passed.");

@@ -7,17 +7,63 @@
     if(Context.Request.RouteValues["controller"]?.ToString()=="Admin")active="admin";
     var demo=Config.GetValue<bool>("DemoMode");
     var publishedForms=new List<FormSummary>();if(signedIn){try{publishedForms=await FormLibrary.SummariesAsync();}catch(WorkflowException){}}
+    var userName=User.Identity?.Name??"User";
 }
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>@ViewData["Title"] · SMA Complaint Management</title><link rel="stylesheet" href="~/css/app.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/workflow.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/workspace.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/form-studio.css" asp-append-version="true" /><link rel="stylesheet" href="~/css/workspace-support.css" asp-append-version="true" /></head><body class="@(signedIn ? "workflow-console" : "")">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#14303d" />
+<title>@ViewData["Title"] · SMA Complaint Management</title>
+<link rel="preload" href="~/vendor/inter/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/workflow.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/workspace.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/form-studio.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/workspace-support.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/ui.css" asp-append-version="true" />
+</head>
+<body class="@(signedIn ? "workflow-console" : "login-body")">
 @if(signedIn)
 {
-<aside class="sidebar"><a href="/" class="brand"><span class="brandmark">S</span><span>SMA<span class="brand-sub">Quality management</span></span></a><div class="workspace-label">Complaint workspace</div>@await Html.PartialAsync("_WorkspaceNavigation",(active,role,publishedForms))<div class="sidebar-bottom"><div class="small-label">Form reference</div><strong>Complaint handling</strong><p>SMA-FM-QM-05<br />Revision 07 · 12 Sep 2025</p><span class="sidebar-pill">Internal workspace</span></div></aside>
-<div class="app-shell"><header class="topbar"><div><span class="muted">Workspace</span><span class="slash">/</span><strong>@(ViewData["Title"]??"Overview")</strong></div><div class="topbar-right"><button class="btn secondary small support-button" type="button" data-open-dialog="role-help" aria-label="Show help" title="Show help"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 .2c0 1.8-2.5 1.8-2.5 3.8M12 16.8v.1"/></svg></button><button class="btn secondary small support-button" type="button" data-open-dialog="workspace-notifications" id="notification-bell" aria-label="Notifications"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 17h14l-2-3V9a5 5 0 0 0-10 0v5zM10 21h4"/></svg><b id="notification-count" hidden>0</b></button><span class="top-date">@Ui.Today.ToString("dd MMM yyyy") · MYT</span><span class="avatar">@Ui.Initials(User.Identity!.Name??"User")</span><div class="user-meta"><strong>@User.Identity.Name</strong><small>@role</small></div><form action="/Account/Logout" method="post">@Html.AntiForgeryToken()<button class="text-button" title="Sign out">Sign out</button></form></div></header>
-@if(demo){<div class="demo-banner"><div><b>Demo</b><span>Sample records. Changes reset when the app restarts.</span></div><form action="/Account/Demo" method="post">@Html.AntiForgeryToken()<label for="demo-role">Preview role</label><select id="demo-role" name="role" data-submit-on-change>@foreach(var r in Roles.All){<option selected="@(r==role)">@r</option>}</select><button class="text-button">Switch</button></form></div>}
-@await Html.PartialAsync("_WorkspaceSupport",role)<main class="main-content" id="main-content">@if(TempData["Error"] is string error){<div class="alert error" role="alert">@error</div>}@if(TempData["Success"] is string success){<div class="alert success" role="status">@success</div>}@RenderBody()</main><footer class="app-footer"><span>SMA Complaint Management</span><span>All times shown in Malaysia time · UTC+8</span></footer></div>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<aside class="sidebar" id="app-sidebar" aria-label="Workspace menu">
+  <div class="sidebar-head">
+    <a href="/" class="brand"><span class="brand-name">SMA</span><span class="brand-sub">Quality management</span></a>
+    <button class="icon-button sidebar-close" type="button" data-drawer-close aria-label="Close menu"><icon name="close" size="20" /></button>
+  </div>
+  @await Html.PartialAsync("_WorkspaceNavigation",(active,role,publishedForms))
+  <div class="sidebar-account">
+    <span class="avatar">@Ui.Initials(userName)</span>
+    <div><strong>@userName</strong><small>@role</small></div>
+    <form action="/Account/Logout" method="post">@Html.AntiForgeryToken()<button class="icon-button" aria-label="Sign out" title="Sign out"><icon name="logout" size="18" /></button></form>
+  </div>
+  <div class="sidebar-bottom"><div class="small-label">Form reference</div><strong>Complaint handling</strong><p>SMA-FM-QM-05<br />Revision 07 · 12 Sep 2025</p></div>
+</aside>
+<div class="drawer-scrim" data-drawer-close hidden></div>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="topbar-title"><span class="muted">Workspace</span><span class="slash" aria-hidden="true">/</span><strong>@(ViewData["Title"]??"Overview")</strong></div>
+    <div class="topbar-right">
+      <button class="icon-button support-icon" type="button" data-open-dialog="role-help" aria-label="Show help" title="Show help"><icon name="help" size="20" /></button>
+      <button class="icon-button support-icon" type="button" data-open-dialog="workspace-notifications" id="notification-bell" aria-label="Notifications" title="Notifications"><icon name="bell" size="20" /><b id="notification-count" hidden>0</b></button>
+      <span class="top-date">@Ui.Today.ToString("dd MMM yyyy") · MYT</span>
+      <span class="avatar topbar-avatar" aria-hidden="true">@Ui.Initials(userName)</span>
+      <div class="user-meta"><strong>@userName</strong><small>@role</small></div>
+      <form class="topbar-signout" action="/Account/Logout" method="post">@Html.AntiForgeryToken()<button class="text-button"><icon name="logout" size="16" /><span>Sign out</span></button></form>
+    </div>
+  </header>
+  @if(demo){<div class="demo-banner"><p><b>Demo</b><span>Sample records. Changes reset when the app restarts.</span></p><form action="/Account/Demo" method="post">@Html.AntiForgeryToken()<label for="demo-role">Viewing as</label><select id="demo-role" name="role" data-submit-on-change>@foreach(var r in Roles.All){<option selected="@(r==role)">@r</option>}</select><button class="text-button demo-switch">Switch</button></form></div>}
+  @await Html.PartialAsync("_WorkspaceSupport",role)
+  <main class="main-content" id="main-content">@if(TempData["Error"] is string error){<div class="alert error" role="alert"><icon name="alert" size="18" /><span>@error</span></div>}@if(TempData["Success"] is string success){<div class="alert success" role="status"><icon name="check" size="18" /><span>@success</span></div>}@RenderBody()</main>
+  <footer class="app-footer"><span>SMA Complaint Management</span><span>All times shown in Malaysia time · UTC+8</span></footer>
+</div>
+@await Html.PartialAsync("_MobileTabBar",(active,role))
 }
 else{<main class="login-page">@RenderBody()</main>}
 @if(ViewData["BlazorDashboard"] is true){<script src="~/vendor/chart.js/chart.umd.js" asp-append-version="true"></script><script src="/_framework/blazor.server.js"></script>}
 @if(signedIn){<script src="~/js/workspace-support.js" asp-append-version="true"></script>}
 <script src="~/js/app.js" asp-append-version="true"></script>@await RenderSectionAsync("Scripts", required:false)
-</body></html>
+</body>
+</html>

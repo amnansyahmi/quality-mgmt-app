@@ -27,7 +27,7 @@
   --wf-topbar-height: 52px;
   --wf-icon-size: 16px;
   --wf-hit-area: 28px;
-  --wf-font: Aptos, "Segoe UI", sans-serif;
+  --wf-font: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --wf-radius-control: 4px;
   --wf-radius-badge: 3px;
   --wf-radius-panel: 0px;
@@ -35,10 +35,10 @@
   --wf-radius-avatar: 999px;
   --wf-type-caption-size: 12px;
   --wf-type-caption-line: 16px;
-  --wf-type-body-size: 13px;
-  --wf-type-body-line: 20px;
-  --wf-type-control-size: 13px;
-  --wf-type-control-line: 18px;
+  --wf-type-body-size: 14px;
+  --wf-type-body-line: 21px;
+  --wf-type-control-size: 14px;
+  --wf-type-control-line: 20px;
   --wf-type-section-size: 14px;
   --wf-type-section-line: 20px;
   --wf-type-title-size: 24px;

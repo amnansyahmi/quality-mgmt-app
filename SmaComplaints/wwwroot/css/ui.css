@@ -1,0 +1,726 @@
+/*
+  UI layer: type, icons, shell, login and phone layout.
+  Loaded after the other stylesheets. Colours follow ui-design-system.json (--wf-* tokens).
+  Sections: 1 font and base · 2 icons and controls · 3 desktop shell · 4 login · 5 page details
+            6 tablet · 7 phone shell (tab bar, drawer) · 8 phone content · 9 touch and motion
+*/
+
+/* 1. Font and base ---------------------------------------------------------------------- */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../vendor/inter/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../vendor/inter/inter-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --ui-font: "Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --ui-ink: #18252e;
+  --ui-muted: #5b6b76;
+  --ui-faint: #8494a0;
+  --ui-line: #e3e8eb;
+  --ui-canvas: #f5f7f8;
+  --ui-accent: #087a68;
+  --ui-accent-soft: #e7f3ee;
+  --ui-navy: #14303d;
+  --ui-radius: 8px;
+  --ui-tabbar-height: 60px;
+  --ui-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body,
+button,
+input,
+select,
+textarea,
+.wf-board {
+  font-family: var(--ui-font);
+  font-feature-settings: "cv11", "ss01";
+}
+body {
+  color: var(--ui-ink);
+  background: var(--ui-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body.login-body { background: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--wf-focus, #2468a2);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -48px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: var(--ui-radius);
+  background: var(--ui-ink);
+  color: #fff;
+  font-size: 14px;
+}
+.skip-link:focus { top: 12px; }
+
+/* 2. Icons and controls ----------------------------------------------------------------- */
+.icon {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+
+.btn {
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 38px;
+  padding: 8px 14px;
+  border-radius: var(--ui-radius);
+  line-height: 1.3;
+}
+.btn.small {
+  font-size: 13px;
+  min-height: 34px;
+  padding: 6px 12px;
+}
+.btn .icon { margin: 0 -2px; }
+
+.icon-button {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ui-radius);
+  background: transparent;
+  color: var(--ui-muted);
+  cursor: pointer;
+}
+.icon-button:hover { background: #edf1f3; color: var(--ui-ink); }
+
+.text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ui-muted);
+  cursor: pointer;
+}
+.text-button:hover { color: var(--ui-ink); }
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  border-radius: var(--ui-radius);
+}
+.alert .icon { margin-top: 1px; }
+
+.badge {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+/* 3. Desktop shell ---------------------------------------------------------------------- */
+.workflow-console .sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding: 18px 12px;
+}
+.sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px 18px;
+}
+.sidebar-close { display: none; color: var(--wf-sidebar-muted, #a3b6c2); }
+.sidebar-close:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+
+.brand {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  color: #fff;
+  line-height: 1;
+}
+.workflow-console .brand,
+.login-story .brand {
+  font-size: inherit;
+  gap: 4px;
+}
+.brand-name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+.workflow-console .brand-sub,
+.login-story .brand-sub {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--wf-sidebar-muted, #a3b6c2);
+}
+
+.nav-group-label {
+  margin: 18px 10px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--wf-sidebar-muted, #a3b6c2);
+}
+.sidebar-nav .nav-group-label:first-child { margin-top: 4px; }
+
+.workflow-console .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  padding: 8px 10px;
+  margin-bottom: 2px;
+  border-radius: var(--ui-radius);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--wf-sidebar-text, #d5e2e9);
+  box-shadow: none;
+}
+.workflow-console .nav-item:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+.workflow-console .nav-item.active {
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: none;
+}
+.workflow-console .navicon {
+  width: 18px;
+  height: 18px;
+  color: var(--wf-sidebar-muted, #a3b6c2);
+}
+.workflow-console .nav-item.active .navicon { color: #7fd6c3; }
+.nav-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nav-create .nav-item { width: 100%; }
+
+.sidebar-account { display: none; }
+.workflow-console .sidebar-bottom {
+  margin-top: auto;
+  padding: 16px 10px 4px;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+.workflow-console .sidebar-bottom .small-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--wf-sidebar-muted, #a3b6c2);
+}
+.workflow-console .sidebar-bottom strong { display: block; margin-top: 4px; font-size: 13px; }
+.workflow-console .sidebar-bottom p { margin: 4px 0 0; font-size: 12px; }
+
+.workflow-console .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  height: 60px;
+  padding: 0 24px;
+  gap: 16px;
+  font-size: 13px;
+  background: rgba(255, 255, 255, .96);
+  backdrop-filter: saturate(1.4) blur(8px);
+  -webkit-backdrop-filter: saturate(1.4) blur(8px);
+}
+.topbar-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.topbar-title strong {
+  font-size: 15px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.topbar-title .slash { color: #c3ccd2; }
+.workflow-console .topbar-right { gap: 6px; }
+.topbar-right .support-icon { color: var(--ui-muted); }
+.topbar-right #notification-count {
+  position: absolute;
+  top: 5px;
+  right: 4px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: #c4453b;
+  color: #fff;
+  font-size: 10px;
+  line-height: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+.topbar-right #notification-count[hidden] { display: none; }
+.workflow-console .top-date { margin: 0 8px; color: var(--ui-faint); font-size: 13px; }
+.workflow-console .topbar .avatar {
+  width: 32px;
+  height: 32px;
+  font-size: 12px;
+  font-weight: 650;
+  background: var(--ui-accent-soft);
+  color: #1d6656;
+}
+.user-meta { display: flex; flex-direction: column; line-height: 1.25; margin-right: 6px; }
+.user-meta strong { font-size: 13px; font-weight: 600; }
+.user-meta small { font-size: 12px; color: var(--ui-faint); }
+.topbar-signout { margin: 0; }
+.topbar-signout .text-button { padding: 8px 10px; border-radius: var(--ui-radius); }
+.topbar-signout .text-button:hover { background: #edf1f3; }
+
+.workflow-console .demo-banner {
+  padding: 8px 24px;
+  font-size: 13px;
+  gap: 12px;
+}
+.demo-banner p {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  min-width: 0;
+}
+.workflow-console .demo-banner b {
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.workflow-console .demo-banner form { gap: 8px; }
+.workflow-console .demo-banner label { font-size: 13px; }
+.workflow-console .demo-banner select {
+  width: auto;
+  min-width: 132px;
+  min-height: 32px;
+  padding: 4px 28px 4px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+.demo-switch { font-size: 13px; }
+
+.workflow-console .main-content { padding: 24px; }
+.workflow-console .app-footer { padding: 14px 24px; font-size: 12px; }
+
+/* 4. Login ------------------------------------------------------------------------------ */
+.login-page {
+  grid-template-columns: minmax(360px, 5fr) 7fr;
+}
+.login-story {
+  background: var(--ui-navy);
+  padding: 48px 56px;
+}
+.login-story-body { max-width: 460px; }
+.login-story .eyebrow.light {
+  margin: 0 0 16px;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.login-story h1 {
+  margin: 0;
+  font-size: clamp(30px, 3.2vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -.025em;
+  font-weight: 650;
+}
+.login-lede {
+  margin: 18px 0 0;
+  max-width: 38ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #a9bfca;
+}
+.login-steps {
+  display: flex;
+  gap: 28px;
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: #d3e0e6;
+}
+.login-steps span {
+  margin-right: 8px;
+  font-variant-numeric: tabular-nums;
+  color: #6fc8b6;
+}
+.login-ref { font-size: 12px; color: #7f9daa; }
+
+.login-form { padding: 48px; }
+.login-form-inner { max-width: 440px; }
+.login-form .eyebrow {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ui-accent);
+}
+.login-form h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  font-weight: 650;
+}
+.login-form .muted {
+  margin: 0 0 24px;
+  font-size: 15px;
+  color: var(--ui-muted);
+}
+
+.role-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--ui-line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.role-list li + li { border-top: 1px solid var(--ui-line); }
+.role-list form { margin: 0; }
+.role-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 16px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: var(--ui-ink);
+  cursor: pointer;
+  transition: background-color .15s ease;
+}
+.role-option:hover { background: #f6faf8; }
+.role-option:focus-visible { outline-offset: -2px; }
+.role-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--ui-accent-soft);
+  color: var(--ui-accent);
+  flex: none;
+}
+.role-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.role-text strong { font-size: 15px; font-weight: 600; }
+.role-text small { font-size: 13px; color: var(--ui-muted); }
+.role-chevron { color: #a7b4bc; transition: transform .15s ease, color .15s ease; }
+.role-option:hover .role-chevron { color: var(--ui-accent); transform: translateX(2px); }
+
+.login-note {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ui-faint);
+}
+.login-note .icon { margin-top: 2px; }
+
+/* 5. Page details ----------------------------------------------------------------------- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--ui-muted);
+}
+.back-link:hover { color: var(--ui-ink); }
+
+.section-number {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--ui-radius);
+  font-size: 15px;
+  font-weight: 650;
+}
+.section-number.section-icon { font-size: 0; }
+
+.file-row { gap: 14px; }
+.file-row:hover strong { color: var(--ui-accent); }
+.file-row strong { font-size: 14px; }
+.file-row small { font-size: 12px; }
+.file-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--ui-radius);
+}
+.file-download { color: var(--ui-faint); }
+
+.print-toolbar .back-link { margin: 0; }
+
+/* 6. Tablet: icon rail (761px to 900px) ------------------------------------------------- */
+@media (max-width: 900px) and (min-width: 761px) {
+  .workflow-console .sidebar { padding: 18px 10px; }
+  .sidebar-head { justify-content: center; padding: 4px 0 14px; }
+  .workflow-console .brand { align-items: center; }
+  .nav-group-label { height: 1px; margin: 10px 8px; font-size: 0; background: rgba(255, 255, 255, .08); }
+  .workflow-console .nav-item { justify-content: center; padding: 10px 8px; }
+  .workflow-console .nav-item .nav-label { display: none; }
+}
+
+/* 7. Phone shell: bottom tab bar and drawer (760px and below) ---------------------------- */
+.tabbar { display: none; }
+.drawer-scrim[hidden] { display: none; }
+
+@media (max-width: 760px) {
+  .workflow-console { padding-bottom: calc(var(--ui-tabbar-height) + var(--ui-safe-bottom)); }
+  .workflow-console .app-shell { margin-left: 0; }
+
+  .tabbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    height: calc(var(--ui-tabbar-height) + var(--ui-safe-bottom));
+    padding: 0 max(4px, env(safe-area-inset-right, 0px)) var(--ui-safe-bottom) max(4px, env(safe-area-inset-left, 0px));
+    background: rgba(255, 255, 255, .97);
+    border-top: 1px solid var(--ui-line);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  }
+  .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    padding: 6px 2px;
+    border: 0;
+    background: transparent;
+    color: #6b7b86;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 550;
+    line-height: 1.1;
+    cursor: pointer;
+  }
+  .tab span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tab.active { color: var(--ui-accent); }
+  .tab:focus-visible { outline-offset: -4px; border-radius: 10px; }
+
+  .workflow-console .sidebar {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(320px, 86vw);
+    padding: max(14px, env(safe-area-inset-top, 0px)) 14px calc(16px + var(--ui-safe-bottom));
+    transform: translateX(-102%);
+    visibility: hidden;
+    transition: transform .22s ease, visibility 0s linear .22s;
+    z-index: 60;
+    box-shadow: none;
+  }
+  body.drawer-open .sidebar {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform .22s ease;
+    box-shadow: 0 0 0 100vmax rgba(9, 20, 27, 0), 12px 0 32px rgba(9, 20, 27, .22);
+  }
+  .drawer-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    background: rgba(9, 20, 27, .45);
+  }
+  body.drawer-open { overflow: hidden; }
+  .sidebar-close { display: inline-grid; }
+
+  /* Undo the narrow-rail rules from app.css inside the drawer. */
+  .workflow-console .sidebar .brand > span:last-child,
+  .workflow-console .sidebar-bottom { display: block; }
+  .workflow-console .sidebar .brand { justify-content: flex-start; margin: 0; }
+  .workflow-console .sidebar .nav-item { font-size: 15px; justify-content: flex-start; gap: 12px; min-height: 44px; padding: 10px; }
+  .workflow-console .sidebar .navicon { width: 20px; height: 20px; }
+
+  .sidebar-account {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+    padding: 14px 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+    color: #fff;
+  }
+  .sidebar-account > div { display: flex; flex-direction: column; min-width: 0; flex: 1; line-height: 1.3; }
+  .sidebar-account strong { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sidebar-account small { font-size: 12px; color: var(--wf-sidebar-muted, #a3b6c2); }
+  .sidebar-account .avatar { display: inline-grid; width: 36px; height: 36px; background: rgba(255, 255, 255, .12); color: #fff; font-size: 12px; }
+  .sidebar-account form { margin: 0; }
+  .sidebar-account .icon-button { color: var(--wf-sidebar-muted, #a3b6c2); }
+  .sidebar-account .icon-button:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+  .workflow-console .sidebar-bottom { margin-top: 16px; padding: 14px 10px 0; }
+
+  .workflow-console .topbar {
+    height: 56px;
+    padding: 0 6px 0 16px;
+  }
+  .topbar-title .muted,
+  .topbar-title .slash,
+  .workflow-console .top-date,
+  .workflow-console .topbar .topbar-avatar,
+  .workflow-console .user-meta,
+  .topbar-signout { display: none; }
+  .topbar-title { max-width: none; }
+  .topbar-title strong { font-size: 16px; }
+
+  .workflow-console .demo-banner {
+    padding: 6px 8px 6px 16px;
+    font-size: 13px;
+  }
+  .demo-banner p span { display: none; }
+  .workflow-console .demo-banner label { display: inline; color: inherit; }
+  .demo-switch { display: none; }
+  .workflow-console .demo-banner select { min-width: 128px; }
+
+  .workflow-console .main-content { padding: 18px 16px 24px; }
+  .workflow-console .app-footer {
+    flex-direction: column;
+    gap: 2px;
+    padding: 14px 16px;
+  }
+}
+
+/* 8. Phone content ---------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .login-page { display: flex; flex-direction: column; min-height: 100dvh; }
+  .login-story {
+    min-height: 0;
+    padding: max(20px, env(safe-area-inset-top, 0px)) 20px 24px;
+    gap: 22px;
+    justify-content: flex-start;
+  }
+  .login-story-body { padding: 0; }
+  .login-story .eyebrow.light { margin-bottom: 10px; font-size: 11px; }
+  .login-story h1 { font-size: 26px; }
+  .login-lede,
+  .login-steps,
+  .login-ref { display: none; }
+  .login-form { align-items: flex-start; padding: 24px 16px calc(28px + var(--ui-safe-bottom)); }
+  .login-form h2 { font-size: 22px; }
+  .login-form .muted { margin-bottom: 18px; font-size: 14px; }
+  .role-option { min-height: 68px; padding: 12px 14px; }
+
+  /* Register and deadline tables become a stacked list. */
+  .queue-table-scroll { overflow: visible; }
+  .queue-table,
+  .queue-table tbody,
+  .queue-table tr,
+  .queue-table td { display: block; width: 100%; }
+  .queue-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .queue-table tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--ui-line);
+  }
+  .queue-table tr:last-child { border-bottom: 0; }
+  .queue-table td { padding: 0; border: 0; min-width: 0; font-size: 14px; }
+  .queue-table td.cell-main { grid-column: 1 / -1; }
+  .queue-table td.cell-meta::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    color: var(--ui-faint);
+  }
+  .queue-table td.cell-open { display: none; }
+  .queue-table .queue-reference { display: inline-block; padding: 2px 0; }
+
+  .detail-heading { gap: 14px; }
+  .record-status { gap: 8px 14px; font-size: 13px; }
+}
+
+/* 9. Touch, zoom and motion ------------------------------------------------------------- */
+a,
+button,
+label,
+select,
+summary,
+[role="button"] {
+  touch-action: manipulation; /* removes double-tap zoom delay; pinch zoom still works */
+}
+
+@media (pointer: coarse) {
+  /* iOS zooms into fields with text smaller than 16px. Keep fields at 16px instead of disabling zoom. */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+  select,
+  textarea,
+  .workflow-console .demo-banner select { font-size: 16px; }
+  .btn { min-height: 44px; }
+  .btn.small { min-height: 40px; }
+  .icon-button { width: 44px; height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workflow-console .sidebar,
+  body.drawer-open .sidebar,
+  .role-option,
+  .role-chevron { transition: none; }
+}
+
+@media print {
+  .tabbar,
+  .drawer-scrim,
+  .skip-link { display: none !important; }
+}

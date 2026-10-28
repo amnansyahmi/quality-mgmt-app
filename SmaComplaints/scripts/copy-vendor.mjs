@@ -1,5 +1,16 @@
 import fs from 'node:fs';
-const destination=new URL('../wwwroot/vendor/chart.js/',import.meta.url);
-fs.mkdirSync(destination,{recursive:true});
-for(const [source,name] of [['dist/chart.umd.js','chart.umd.js'],['LICENSE.md','LICENSE.md']])fs.copyFileSync(new URL('../node_modules/chart.js/'+source,import.meta.url),new URL(name,destination));
-console.log('Copied Chart.js and MIT license');
+
+function copy(packageDir, files, destination) {
+  const target = new URL(`../wwwroot/vendor/${destination}/`, import.meta.url);
+  fs.mkdirSync(target, { recursive: true });
+  for (const [source, name] of files) fs.copyFileSync(new URL(`../node_modules/${packageDir}/${source}`, import.meta.url), new URL(name, target));
+}
+
+copy('chart.js', [['dist/chart.umd.js', 'chart.umd.js'], ['LICENSE.md', 'LICENSE.md']], 'chart.js');
+// Self-hosted Inter (SIL OFL 1.1): no font CDN, consistent type on phones and desktops.
+copy('@fontsource-variable/inter', [
+  ['files/inter-latin-wght-normal.woff2', 'inter-latin-wght-normal.woff2'],
+  ['files/inter-latin-ext-wght-normal.woff2', 'inter-latin-ext-wght-normal.woff2'],
+  ['LICENSE', 'LICENSE.txt'],
+], 'inter');
+console.log('Copied Chart.js (MIT) and Inter (OFL-1.1)');
