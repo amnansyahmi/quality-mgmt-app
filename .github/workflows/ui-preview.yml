@@ -30,7 +30,7 @@ jobs:
         run: dotnet build SmaComplaints.sln -c Release -p:UseAppHost=false 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
 
       - name: Workflow checks
-        run: dotnet run --project SmaComplaints.Checks -c Release --no-build 2>&1 | tail -n 40 | tee checks.log; exit ${PIPESTATUS[0]}
+        run: dotnet SmaComplaints.Checks/bin/Release/net10.0/SmaComplaints.Checks.dll 2>&1 | tail -n 40 | tee checks.log; exit ${PIPESTATUS[0]}
 
       - name: Start demo app
         run: |
