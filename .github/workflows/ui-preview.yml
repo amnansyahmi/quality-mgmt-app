@@ -42,9 +42,8 @@ jobs:
       - name: Capture screenshots
         run: |
           cd .github/ui-preview
-          npm init -y > /dev/null
-          npm install playwright@1.56.1 > /dev/null
-          npx playwright install --with-deps chromium > /dev/null
+          log="$GITHUB_WORKSPACE/setup.log"
+          { npm init -y && npm install playwright@1.56.1 && npx playwright install --with-deps chromium; } > "$log" 2>&1 || { tail -40 "$log"; exit 1; }
           node shots.mjs http://127.0.0.1:5079 "$GITHUB_WORKSPACE/shots" 2>&1 | tee "$GITHUB_WORKSPACE/shots.log"; exit ${PIPESTATUS[0]}
 
       - name: Publish to ui-shots branch
@@ -55,7 +54,8 @@ jobs:
           sha=$(git rev-parse --short HEAD)
           mkdir -p publish/$sha
           cp -r shots/. publish/$sha/ 2>/dev/null || true
-          cp build.log checks.log app.log shots.log publish/$sha/ 2>/dev/null || true
+          for f in build.log checks.log app.log setup.log shots.log; do [ -f "$f" ] && cp "$f" publish/$sha/; done
+          [ -f setup.log ] && tail -60 setup.log > publish/$sha/setup.log
           echo "${{ job.status }}" > publish/$sha/status.txt
           echo '{"git":{"deploymentEnabled":false}}' > publish/vercel.json
           cd publish
