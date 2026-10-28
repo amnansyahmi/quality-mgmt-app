@@ -1,0 +1,12 @@
+# Render Blueprint for the DEMO build (synthetic in-memory data, resets on restart).
+# One instance only: the demo keeps its records in process memory, so do not scale it out.
+services:
+  - type: web
+    name: quality-mgmt-app-demo
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /Account/Login
+    autoDeploy: true

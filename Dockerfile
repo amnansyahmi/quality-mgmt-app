@@ -1,6 +1,7 @@
-# Demo-only container for Vercel. Runs the app in Development with its
-# synthetic in-memory data (DemoMode). It never connects to SQL Server or SMTP.
-# For real use, deploy with DemoMode=false on a host with SQL Server (see SmaComplaints/README.md).
+# Demo-only container. Runs the app in Development with its synthetic in-memory data
+# (DemoMode). It never connects to SQL Server or SMTP, and its data resets on restart.
+# It needs a host that keeps ONE long-running instance (for example Render); see DEPLOY-DEMO.md.
+# For real use, deploy with DemoMode=false and SQL Server (see SmaComplaints/README.md).
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
@@ -20,6 +21,7 @@ WORKDIR /app
 COPY --from=build /app/publish ./
 
 # DemoMode is only permitted in Development (see Program.cs), so the demo runs as Development.
+# The host's PORT variable (Render sets it) overrides the default below; Program.cs binds to it.
 ENV ASPNETCORE_ENVIRONMENT=Development \
     DemoMode=true \
     PORT=80 \
