@@ -1,0 +1,37 @@
+phone-01-login.png  url=/Account/Login  horizontalOverflow=0px
+phone-02-overview-requestor.png  url=/  horizontalOverflow=0px
+phone-02b-menu-drawer.png  url=/  horizontalOverflow=0px
+phone-03-inbox-requestor.png  url=/Complaints?view=inbox  horizontalOverflow=0px
+phone-04-register.png  url=/Complaints?view=register  horizontalOverflow=0px
+phone-05-drafts.png  url=/Complaints?view=drafts  horizontalOverflow=0px
+phone-06-details.png  url=/Complaints/Details/ebbf7a5e-2404-4060-bfbe-737bf4802154  horizontalOverflow=0px
+phone-07-forms.png  url=/Forms  horizontalOverflow=0px
+phone-08-inbox-qm.png  url=/Complaints?view=inbox  horizontalOverflow=0px
+phone-09-details-qm.png  url=/Complaints/Details/9867dcad-b432-43d7-8e2e-7a1a9ce4dabd?tab=processing&from=inbox#workflow-task  horizontalOverflow=0px
+phone-10-help-dialog.png  url=/Complaints/Details/9867dcad-b432-43d7-8e2e-7a1a9ce4dabd?tab=processing&from=inbox#workflow-task  horizontalOverflow=0px
+phone-11-notifications.png  url=/Complaints/Details/9867dcad-b432-43d7-8e2e-7a1a9ce4dabd?tab=processing&from=inbox#workflow-task  horizontalOverflow=0px
+phone-12-admin.png  url=/Admin  horizontalOverflow=0px
+phone-13-form-studio.png  url=/FormStudio  horizontalOverflow=0px
+--- phone errors ---
+none
+tablet-01-login.png  url=/Account/Login  horizontalOverflow=0px
+tablet-03-inbox-requestor.png  url=/Complaints?view=inbox  horizontalOverflow=0px
+tablet-04-register.png  url=/Complaints?view=register  horizontalOverflow=6px
+tablet-06-details.png  url=/Complaints/Details/ebbf7a5e-2404-4060-bfbe-737bf4802154  horizontalOverflow=0px
+--- tablet errors ---
+none
+desktop-01-login.png  url=/Account/Login  horizontalOverflow=0px
+desktop-02-overview-requestor.png  url=/  horizontalOverflow=0px
+desktop-03-inbox-requestor.png  url=/Complaints?view=inbox  horizontalOverflow=0px
+desktop-04-register.png  url=/Complaints?view=register  horizontalOverflow=0px
+desktop-05-drafts.png  url=/Complaints?view=drafts  horizontalOverflow=0px
+desktop-06-details.png  url=/Complaints/Details/ebbf7a5e-2404-4060-bfbe-737bf4802154  horizontalOverflow=0px
+desktop-07-forms.png  url=/Forms  horizontalOverflow=0px
+desktop-08-inbox-qm.png  url=/Complaints?view=inbox  horizontalOverflow=0px
+desktop-09-details-qm.png  url=/Complaints/Details/9867dcad-b432-43d7-8e2e-7a1a9ce4dabd?tab=processing&from=inbox#workflow-task  horizontalOverflow=0px
+desktop-10-help-dialog.png  url=/Complaints/Details/9867dcad-b432-43d7-8e2e-7a1a9ce4dabd?tab=processing&from=inbox#workflow-task  horizontalOverflow=0px
+desktop-11-notifications.png  url=/Complaints/Details/9867dcad-b432-43d7-8e2e-7a1a9ce4dabd?tab=processing&from=inbox#workflow-task  horizontalOverflow=0px
+desktop-12-admin.png  url=/Admin  horizontalOverflow=0px
+desktop-13-form-studio.png  url=/FormStudio  horizontalOverflow=0px
+--- desktop errors ---
+none

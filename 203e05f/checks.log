@@ -1,0 +1,40 @@
+PASS Icon 'info' used in Login.cshtml exists
+PASS Icon 'arrow-right' used in _Notification.cshtml exists
+PASS Icon 'back' used in Print.cshtml exists
+PASS Icon 'back' used in Details.cshtml exists
+PASS Icon 'print' used in Details.cshtml exists
+PASS Icon 'evidence' used in Details.cshtml exists
+PASS Icon 'file' used in Details.cshtml exists
+PASS Icon 'download' used in Details.cshtml exists
+PASS Icon 'history' used in Details.cshtml exists
+PASS Icon 'arrow-right' used in _Processing.cshtml exists
+PASS Icon 'arrow-right' used in _Processing.cshtml exists
+PASS Icon 'plus' used in Index.cshtml exists
+PASS Icon 'chevron-right' used in Index.cshtml exists
+PASS Icon 'back' used in Edit.cshtml exists
+PASS Icon 'plus' used in _WorkspaceNavigation.cshtml exists
+PASS Icon 'register' used in _WorkspaceNavigation.cshtml exists
+PASS Icon 'drafts' used in _WorkspaceNavigation.cshtml exists
+PASS Icon 'forms' used in _WorkspaceNavigation.cshtml exists
+PASS Icon 'form-module' used in _WorkspaceNavigation.cshtml exists
+PASS Icon 'studio' used in _WorkspaceNavigation.cshtml exists
+PASS Icon 'people' used in _WorkspaceNavigation.cshtml exists
+PASS Icon 'menu' used in _MobileTabBar.cshtml exists
+PASS Icon 'plus' used in _Actions.cshtml exists
+PASS Icon 'close' used in _AppLayout.cshtml exists
+PASS Icon 'logout' used in _AppLayout.cshtml exists
+PASS Icon 'help' used in _AppLayout.cshtml exists
+PASS Icon 'bell' used in _AppLayout.cshtml exists
+PASS Icon 'logout' used in _AppLayout.cshtml exists
+PASS Icon 'alert' used in _AppLayout.cshtml exists
+PASS Icon 'check' used in _AppLayout.cshtml exists
+PASS Role Requestor has an icon
+PASS Role Owner has an icon
+PASS Role HOD has an icon
+PASS Role QM has an icon
+PASS Role CM has an icon
+PASS Role Admin has an icon
+PASS Unknown icon names render nothing
+PASS Icons are decorative unless labelled
+
+147 workflow and authorization checks passed.
