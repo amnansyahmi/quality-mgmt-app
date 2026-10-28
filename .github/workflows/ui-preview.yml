@@ -1,0 +1,67 @@
+# Builds the app, runs the workflow checks, starts the demo and captures UI screenshots.
+# Results (screenshots, rendered HTML, logs) are pushed to the `ui-shots` branch under <short-sha>/.
+name: UI preview
+
+on:
+  push:
+    branches: [vercel-demo]
+    paths-ignore: ["**.md"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ui-preview
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Build
+        run: dotnet build SmaComplaints.sln -c Release -p:UseAppHost=false 2>&1 | tee build.log; exit ${PIPESTATUS[0]}
+
+      - name: Workflow checks
+        run: dotnet run --project SmaComplaints.Checks -c Release --no-build 2>&1 | tail -n 40 | tee checks.log; exit ${PIPESTATUS[0]}
+
+      - name: Start demo app
+        run: |
+          cd SmaComplaints
+          nohup dotnet bin/Release/net10.0/SmaComplaints.dll --environment Development --urls http://127.0.0.1:5079 > ../app.log 2>&1 &
+          for i in $(seq 1 60); do curl -fs http://127.0.0.1:5079/Account/Login > /dev/null && exit 0; sleep 1; done
+          echo "App did not start"; exit 1
+
+      - name: Capture screenshots
+        run: |
+          cd .github/ui-preview
+          npm init -y > /dev/null
+          npm install playwright@1.56.1 > /dev/null
+          npx playwright install --with-deps chromium > /dev/null
+          node shots.mjs http://127.0.0.1:5079 "$GITHUB_WORKSPACE/shots" 2>&1 | tee "$GITHUB_WORKSPACE/shots.log"; exit ${PIPESTATUS[0]}
+
+      - name: Publish to ui-shots branch
+        if: always()
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sha=$(git rev-parse --short HEAD)
+          mkdir -p publish/$sha
+          cp -r shots/. publish/$sha/ 2>/dev/null || true
+          cp build.log checks.log app.log shots.log publish/$sha/ 2>/dev/null || true
+          echo "${{ job.status }}" > publish/$sha/status.txt
+          echo '{"git":{"deploymentEnabled":false}}' > publish/vercel.json
+          cd publish
+          git init -q -b ui-shots
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -qm "UI preview for $sha"
+          git push -qf "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git" ui-shots
