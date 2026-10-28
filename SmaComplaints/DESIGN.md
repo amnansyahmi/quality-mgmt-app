@@ -43,3 +43,13 @@ Run `npm ci` then `npm run build` to rebuild both vendored Chart.js and CSS. Com
 Overview is the only analytics dashboard. My task inbox lists actual preparation, approval, reportability, and exception tasks; the register provides record search; drafts contains the signed-in creator’s unsubmitted/returned notifications; deadlines separates overdue work from the next three days. All projections use the server-authorized record set.
 
 The detail page shows the current phase with named task holders and a prominent handoff panel. Approve & forward validates an active recipient in the mandatory next role and routes the task to that person’s inbox. Return requires a reason and an allowed destination: the preparer or the immediately preceding reviewer in that approval phase. Returns preserve the reference, evidence, and history. Resubmission restarts the required approvals. Stale revisions and unauthorized decisions are rejected. Current return instructions persist through progress saves and clear when resubmitted; historical decisions remain recorded.
+
+## Interface refinement · 28 Oct 2026
+
+- **Icons.** One Lucide-based SVG set (ISC) replaces text glyphs and letter tiles: arrows, the ↗ that iOS draws as an emoji, box characters, fullwidth plus signs and the R/O/H/Q/C/A role tiles. Views use `<icon name="..." />` (`Services/IconTagHelper.cs`); the Blazor dashboard uses the same set through `ConsoleIcon`. Add icons in `scripts/build-icons.mjs` and run `npm run build:icons`. `SmaComplaints.Checks` fails if a view names an icon that does not exist. Arrows inside sentences (for example "HOD → QM") stay as text.
+- **Type.** Inter (OFL) is self-hosted in `wwwroot/vendor/inter`, so phones no longer fall back to a different face. Text below 12px was raised (8–9px uppercase labels to 11px, 10–11px to 12px); body and controls are 14px.
+- **Shell.** The wordmark replaces the letter-tile logo. The topbar is sticky. From 761px to 1000px the sidebar is an icon rail. At 760px and below a bottom tab bar (Overview, Inbox, Register, Forms, Menu) replaces the rail, and Menu opens the full navigation as a drawer with the signed-in account and sign-out. Safe-area insets are respected.
+- **Phone content.** Register and people tables stack into labelled rows instead of scrolling sideways. Dialogs open as bottom sheets.
+- **Zoom.** Fields are 16px on touch screens so iOS does not zoom on focus, and controls use `touch-action: manipulation`. Pinch zoom is not disabled.
+- **Styles.** `wwwroot/css/ui.css` is loaded last and is readable source, organised by section.
+- **Verification.** `.github/workflows/ui-preview.yml` builds the app, runs the checks and captures phone, tablet and desktop screenshots to the `ui-shots` branch.

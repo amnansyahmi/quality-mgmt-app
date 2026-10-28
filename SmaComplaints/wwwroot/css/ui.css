@@ -230,9 +230,8 @@ body.login-body { background: #fff; }
 .workflow-console .nav-item.active .navicon { color: #7fd6c3; }
 .nav-label {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 .nav-create .nav-item { width: 100%; }
 
@@ -271,6 +270,7 @@ body.login-body { background: #fff; }
   overflow: hidden;
   white-space: nowrap;
 }
+.workflow-console .topbar > .topbar-title { max-width: none; }
 .topbar-title strong {
   font-size: 15px;
   font-weight: 600;
@@ -314,13 +314,14 @@ body.login-body { background: #fff; }
 .topbar-signout .text-button:hover { background: #edf1f3; }
 
 .workflow-console .demo-banner {
+  align-items: center;
   padding: 8px 24px;
   font-size: 13px;
   gap: 12px;
 }
 .demo-banner p {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
   margin: 0;
   min-width: 0;
@@ -504,13 +505,15 @@ body.login-body { background: #fff; }
 
 .print-toolbar .back-link { margin: 0; }
 
-/* 6. Tablet: icon rail (761px to 900px) ------------------------------------------------- */
-@media (max-width: 900px) and (min-width: 761px) {
-  .workflow-console .sidebar { padding: 18px 10px; }
-  .sidebar-head { justify-content: center; padding: 4px 0 14px; }
-  .workflow-console .brand { align-items: center; }
-  .nav-group-label { height: 1px; margin: 10px 8px; font-size: 0; background: rgba(255, 255, 255, .08); }
-  .workflow-console .nav-item { justify-content: center; padding: 10px 8px; }
+/* 6. Tablet: icon rail (761px to 1000px; width comes from workflow.css) ------------------ */
+@media (max-width: 1000px) and (min-width: 761px) {
+  .workflow-console .sidebar { padding: 16px 6px; }
+  .sidebar-head { justify-content: center; padding: 2px 0 12px; }
+  .workflow-console .brand { align-items: center; margin: 0; }
+  .workflow-console .brand-name { font-size: 13px; letter-spacing: .04em; }
+  .workflow-console .sidebar .nav-group-label { display: block; height: 1px; margin: 10px 6px; font-size: 0; background: rgba(255, 255, 255, .1); }
+  .workflow-console .sidebar .nav-group-label:first-child { display: none; }
+  .workflow-console .nav-item { justify-content: center; padding: 10px 0; }
   .workflow-console .nav-item .nav-label { display: none; }
 }
 
@@ -574,7 +577,7 @@ body.login-body { background: #fff; }
     transform: translateX(0);
     visibility: visible;
     transition: transform .22s ease;
-    box-shadow: 0 0 0 100vmax rgba(9, 20, 27, 0), 12px 0 32px rgba(9, 20, 27, .22);
+    box-shadow: 12px 0 32px rgba(9, 20, 27, .22);
   }
   .drawer-scrim {
     position: fixed;
@@ -589,6 +592,9 @@ body.login-body { background: #fff; }
   .workflow-console .sidebar .brand > span:last-child,
   .workflow-console .sidebar-bottom { display: block; }
   .workflow-console .sidebar .brand { justify-content: flex-start; margin: 0; }
+  .workflow-console .sidebar .nav-label,
+  .workflow-console .sidebar .nav-group-label { display: block; }
+  .workflow-console .sidebar .brand { align-items: flex-start; }
   .workflow-console .sidebar .nav-item { font-size: 15px; justify-content: flex-start; gap: 12px; min-height: 44px; padding: 10px; }
   .workflow-console .sidebar .navicon { width: 20px; height: 20px; }
 
@@ -675,7 +681,10 @@ body.login-body { background: #fff; }
     border-bottom: 1px solid var(--ui-line);
   }
   .queue-table tr:last-child { border-bottom: 0; }
-  .queue-table td { padding: 0; border: 0; min-width: 0; font-size: 14px; }
+  .queue-table { min-width: 0; }
+  .queue-table td,
+  .queue-table td:first-child { padding: 0; border: 0; min-width: 0; max-width: none; font-size: 14px; }
+  .queue-table tr:hover { background: transparent; }
   .queue-table td.cell-main { grid-column: 1 / -1; }
   .queue-table td.cell-meta::before {
     content: attr(data-label);
@@ -686,6 +695,39 @@ body.login-body { background: #fff; }
   }
   .queue-table td.cell-open { display: none; }
   .queue-table .queue-reference { display: inline-block; padding: 2px 0; }
+
+  /* People table: name first, edit link in the corner, details below. */
+  .table-scroll:has(.people-table) { overflow: visible; }
+  .people-table,
+  .people-table tbody,
+  .people-table td { display: block; width: 100%; }
+  .people-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .people-table tr {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr) minmax(0, .8fr);
+    gap: 10px 16px;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--ui-line);
+  }
+  .people-table tr:last-child { border-bottom: 0; }
+  .people-table td { padding: 0; border: 0; font-size: 14px; }
+  .people-table td.cell-main { grid-column: 1 / -1; padding-right: 72px; }
+  .people-table td.cell-main small { display: block; margin-top: 2px; font-size: 13px; }
+  .people-table td.cell-meta::before { content: attr(data-label); display: block; margin-bottom: 2px; font-size: 12px; color: var(--ui-faint); }
+  .people-table td.cell-edit { position: absolute; top: 10px; right: 8px; width: auto; }
+  .people-table td.cell-edit a { min-height: 40px; padding: 0 8px; }
+
+  /* Dialogs open as bottom sheets. */
+  .workspace-dialog {
+    width: 100%;
+    max-width: 100%;
+    max-height: 88dvh;
+    margin: auto 0 0;
+    border: 0;
+    border-radius: 16px 16px 0 0;
+    padding-bottom: var(--ui-safe-bottom);
+  }
 
   .detail-heading { gap: 14px; }
   .record-status { gap: 8px 14px; font-size: 13px; }
